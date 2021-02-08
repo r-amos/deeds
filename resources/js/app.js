@@ -19,6 +19,28 @@ document.body.appendChild(cover);
 
 let quoteIndex = 0;
 
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
+
+let position = {
+    above: "translate(0,-100%)",
+    right: "translate(100%, 0)",
+    below: "translate(0,100%)",
+    left: "translate(-100%,0)"
+};
+
+let outro = {
+    above: "translate(0,100%)",
+    right:  "translate(-100%,0)",
+    below: "translate(0,-100%)",
+    left: "translate(100%, 0)"
+}
+
+let randomAnimation;
+
 const  appendNext = () =>  {
 
     document.getElementById('current').insertAdjacentHTML('beforeEnd', quotes[quoteIndex].template)
@@ -28,7 +50,8 @@ const  appendNext = () =>  {
     nw.style.position = 'absolute';
     nw.style.top = 0;    
     //.innerHTML = quotes[0].template;
-    nw.style.transform = "translate(0,-100%)";
+    randomAnimation = Object.keys(position)[getRandomIntInclusive(0, 3)];
+    nw.style.transform = position[randomAnimation];
     nw.style.zIndex = 10;
     quoteIndex++;
 }
@@ -94,11 +117,9 @@ let onRefresh = (element) => {
 
         element.addEventListener("click", function (e) {
 
-        console.log(e);
-
         e.preventDefault();
     
-        document.getElementById(`${currentIndex}`).style.transform = "translate(0,100%)";
+        document.getElementById(`${currentIndex}`).style.transform = outro[randomAnimation];
         document.getElementById(`${currentIndex + 1}`).style.transform = "translate(0,0)";
     
         let quoteContainer = document.getElementById(`quote-container-${currentIndex +1}`);
@@ -115,17 +136,17 @@ let onRefresh = (element) => {
         fetch("http://localhost:8000/api/daily")
         .then((x) => x.json())
         .then((x) => {
-            console.log(x);
             const img = new Image;
             img.src = x.url;
             quotes.push({
-                index : quotes.length + 1,
+                index : quotes[quotes.length -1].index +1,
                 author: x.quote.author,
                 quote: x.quote.text,
                 image: img,
                 colour: x.colour,
                 overlay: x.overlay,
             });
+            console.log(quotes);
         });
         currentIndex++;
         appendNext();
@@ -135,6 +156,7 @@ let onRefresh = (element) => {
         setTimeout(() => {
 
             document.getElementById('current').removeChild(document.getElementById(currentIndex -1));
+            //quotes.shift();
         }, 500);
     });
 };

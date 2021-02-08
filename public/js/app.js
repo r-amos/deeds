@@ -1975,6 +1975,26 @@ cover.style.zIndex = 1000;
 document.body.appendChild(cover);
 var quoteIndex = 0;
 
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+var position = {
+  above: "translate(0,-100%)",
+  right: "translate(100%, 0)",
+  below: "translate(0,100%)",
+  left: "translate(-100%,0)"
+};
+var outro = {
+  above: "translate(0,100%)",
+  right: "translate(-100%,0)",
+  below: "translate(0,-100%)",
+  left: "translate(100%, 0)"
+};
+var randomAnimation;
+
 var appendNext = function appendNext() {
   document.getElementById('current').insertAdjacentHTML('beforeEnd', quotes[quoteIndex].template); // document.getElementById('newb').classList.add('slider');
 
@@ -1983,7 +2003,8 @@ var appendNext = function appendNext() {
   nw.style.position = 'absolute';
   nw.style.top = 0; //.innerHTML = quotes[0].template;
 
-  nw.style.transform = "translate(0,-100%)";
+  randomAnimation = Object.keys(position)[getRandomIntInclusive(0, 3)];
+  nw.style.transform = position[randomAnimation];
   nw.style.zIndex = 10;
   quoteIndex++;
 };
@@ -2043,9 +2064,8 @@ window.onload = function () {
 
 var onRefresh = function onRefresh(element) {
   element.addEventListener("click", function (e) {
-    console.log(e);
     e.preventDefault();
-    document.getElementById("".concat(currentIndex)).style.transform = "translate(0,100%)";
+    document.getElementById("".concat(currentIndex)).style.transform = outro[randomAnimation];
     document.getElementById("".concat(currentIndex + 1)).style.transform = "translate(0,0)";
     var quoteContainer = document.getElementById("quote-container-".concat(currentIndex + 1));
     var paragraph = document.getElementById("quote-".concat(currentIndex + 1));
@@ -2062,23 +2082,23 @@ var onRefresh = function onRefresh(element) {
     fetch("http://localhost:8000/api/daily").then(function (x) {
       return x.json();
     }).then(function (x) {
-      console.log(x);
       var img = new Image();
       img.src = x.url;
       quotes.push({
-        index: quotes.length + 1,
+        index: quotes[quotes.length - 1].index + 1,
         author: x.quote.author,
         quote: x.quote.text,
         image: img,
         colour: x.colour,
         overlay: x.overlay
       });
+      console.log(quotes);
     });
     currentIndex++;
     appendNext(); //setTimeout(() =>  document.documentElement.style.setProperty("--overlay", quotes[currentIndex]['overlay']), 250);
 
     setTimeout(function () {
-      document.getElementById('current').removeChild(document.getElementById(currentIndex - 1));
+      document.getElementById('current').removeChild(document.getElementById(currentIndex - 1)); //quotes.shift();
     }, 500);
   });
 };
