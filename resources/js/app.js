@@ -2,6 +2,8 @@ require("alpinejs");
 
 console.log(quotes[0]);
 
+let currentIndex = 1;
+
 let cover = document.createElement("div");
 cover.height = "100%";
 cover.width = "100%";
@@ -10,9 +12,30 @@ cover.style.left = 0;
 cover.style.top = 0;
 cover.style.width = "100%";
 cover.style.height = "100%";
-cover.style.backgroundColor = "white";
+cover.style.backgroundColor = "red";
 cover.style.zIndex = 1000;
 document.body.appendChild(cover);
+
+
+let quoteIndex = 0;
+
+const  appendNext = () =>  {
+
+    document.getElementById('current').insertAdjacentHTML('beforeEnd', quotes[quoteIndex].template)
+    // document.getElementById('newb').classList.add('slider');
+    let nw = document.getElementById(`${quotes[quoteIndex].index}`);
+    console.log(nw, quotes[quoteIndex]);
+    nw.style.position = 'absolute';
+    nw.style.top = 0;    
+    //.innerHTML = quotes[0].template;
+    nw.style.transform = "translate(0,-100%)";
+    nw.style.zIndex = 10;
+    quoteIndex++;
+}
+
+appendNext();
+
+
 
 const debounce = (func, wait) => {
     let timeout;
@@ -31,8 +54,8 @@ const debounce = (func, wait) => {
 window.onload = function () {
     document.documentElement.style.setProperty("--overlay", overlay);
 
-    let quoteContainer = document.getElementById("quote");
-    let paragraph = document.getElementById("quote-1");
+    let quoteContainer = document.getElementById(`quote-container-${currentIndex}`);
+    let paragraph = document.getElementById(`quote-${currentIndex}`);
     paragraph.style.fontSize = "200px";
 
     let height = quoteContainer.clientHeight;
@@ -42,177 +65,80 @@ window.onload = function () {
     let whatever = parseFloat(height) - 20;
 
     while (parseFloat(paragraph.clientHeight) > whatever) {
-        currentSize = currentSize - 10;
+        currentSize = currentSize - 2;
         paragraph.style.fontSize = currentSize + "px";
     }
 
-    document.body.removeChild(cover);
+    let imagesLoaded = 0;
+
+    quotes = quotes.map((q, i) =>  {
+        const img = new Image;
+        img.src = q.image;
+        q.image = img;
+
+            img.onload =  () => {
+                ++imagesLoaded;
+                console.log(imagesLoaded);
+                if (imagesLoaded === (quotes.length -1)) {
+                    document.body.removeChild(cover);
+                }
+            }
+        
+        return q;
+    });
+
+    console.log(quotes);
 };
 
-document.getElementById("refresh").addEventListener("click", function (e) {
-    e.preventDefault();
+let onRefresh = (element) => {
 
-    let c = document.getElementById("container");
+        element.addEventListener("click", function (e) {
 
-    let qc = document.getElementById("quote-container");
-    let ic = document.getElementById("image-container");
-    ic.classList.add("w-full");
-    ic.style.visibility = "hidden";
+        console.log(e);
 
-    // var elementToCover = c;
-    // var rect = elementToCover.getBoundingClientRect();
-    // var overlayElement = document.createElement("div");
-    // overlayElement.style.position = "absolute";
-    // overlayElement.style.zIndex = "999";
-    // overlayElement.style.width = "100%";
-    // overlayElement.style.height = "100%";
-    // overlayElement.style.top = 0 + "px";
-    // overlayElement.style.left = 0 + "px";
-    // // overlayElement.style.width = rect.right - rect.left + "px";
-    // // overlayElement.style.height = rect.bottom - rect.top + "px";
-    // overlayElement.style.backgroundColor = "red";
-    // //overlayElement.classList.add("rotate-in-center");
-    // document.body.appendChild(overlayElement);
+        e.preventDefault();
+    
+        document.getElementById(`${currentIndex}`).style.transform = "translate(0,100%)";
+        document.getElementById(`${currentIndex + 1}`).style.transform = "translate(0,0)";
+    
+        let quoteContainer = document.getElementById(`quote-container-${currentIndex +1}`);
+        let paragraph = document.getElementById(`quote-${currentIndex +1}`);
+        paragraph.style.fontSize = "200px";
+        let height = quoteContainer.clientHeight;
+        let currentSize = 80;
+        let whatever = parseFloat(height) - 20;
+        while (parseFloat(paragraph.clientHeight) > whatever) {
+            currentSize = currentSize - 2;
+            paragraph.style.fontSize = currentSize + "px";
+        }
 
-    if (Math.round(Math.random())) {
-        c.classList.add("flex-row-reverse");
-    } else {
-        c.classList.remove("flex-row-reverse");
-    }
-
-    //if (quotes.length) {
-    console.log("Do Something");
-
-    let x = quotes.shift();
-
-    console.log("Old Colour is: " + colour);
-    console.log("New Colour Is " + x.colour);
-
-    if (colour !== x.colour) {
-        [`100`, `200`, `300`, `400`, `500`, `600`, `700`, `800`, `900`].forEach(
-            (y) => {
-                Array.from(
-                    document.getElementsByClassName(`bg-${colour}-${y}`)
-                ).forEach((z) => {
-                    z.classList.add(`bg-${x.colour}-${y}`);
-                    z.classList.remove(`bg-${colour}-${y}`);
-                });
-            }
-        );
-
-        [`100`, `200`, `300`, `400`, `500`, `600`, `700`, `800`, `900`].forEach(
-            (y) => {
-                Array.from(
-                    document.getElementsByClassName(`text-${colour}-${y}`)
-                ).forEach((z) => {
-                    z.classList.add(`text-${x.colour}-${y}`);
-                    z.classList.remove(`text-${colour}-${y}`);
-                });
-            }
-        );
-    }
-
-    colour = x.colour;
-    document.getElementById("image").src = x.image;
-    let img = new Image();
-    img.onload = () => {
-        setTimeout(() => {
-            ic.classList.remove("w-full");
-            ic.style.visibility = "visible";
-            //document.body.removeChild(overlayElement);
-        }, 1000);
-    };
-    img.src = x.image;
-    document.getElementById("quote-1").innerText = x.quote;
-    document.getElementById("author").innerText = x.author;
-    document.documentElement.style.setProperty("--overlay", x.overlay);
-
-    // Text Size
-    let quoteContainer = document.getElementById("quote");
-    let paragraph = document.getElementById("quote-1");
-    paragraph.style.fontSize = "200px";
-
-    let height = quoteContainer.clientHeight;
-
-    let currentSize = 200;
-
-    let whatever = parseFloat(height) - 20;
-
-    while (parseFloat(paragraph.clientHeight) > whatever) {
-        currentSize = currentSize - 10;
-        paragraph.style.fontSize = currentSize + "px";
-    }
-    //} else {
-    fetch("http://localhost/api/daily")
+        fetch("http://localhost:8000/api/daily")
         .then((x) => x.json())
         .then((x) => {
+            console.log(x);
+            const img = new Image;
+            img.src = x.url;
             quotes.push({
+                index : quotes.length + 1,
                 author: x.quote.author,
                 quote: x.quote.text,
-                image: x.url,
+                image: img,
                 colour: x.colour,
                 overlay: x.overlay,
             });
-            // [
-            //     `100`,
-            //     `200`,
-            //     `300`,
-            //     `400`,
-            //     `500`,
-            //     `600`,
-            //     `700`,
-            //     `800`,
-            //     `900`,
-            // ].forEach((y) => {
-            //     Array.from(
-            //         document.getElementsByClassName(`bg-${colour}-${y}`)
-            //     ).forEach((z) => {
-            //         z.classList.add(`bg-${x.colour}-${y}`);
-            //         z.classList.remove(`bg-${colour}-${y}`);
-            //     });
-            // });
-            // [
-            //     `100`,
-            //     `200`,
-            //     `300`,
-            //     `400`,
-            //     `500`,
-            //     `600`,
-            //     `700`,
-            //     `800`,
-            //     `900`,
-            // ].forEach((y) => {
-            //     Array.from(
-            //         document.getElementsByClassName(`text-${colour}-${y}`)
-            //     ).forEach((z) => {
-            //         z.classList.add(`text-${x.colour}-${y}`);
-            //         z.classList.remove(`text-${colour}-${y}`);
-            //     });
-            // });
-            // colour = x.colour;
-            // document.getElementById("image").src = x.url;
-            // let img = new Image();
-            // img.onload = () => {
-            //     document.body.removeChild(overlayElement);
-            // };
-            // img.src = x.url;
-            // document.getElementById("quote-1").innerText = x.quote.text;
-            // document.getElementById("author").innerText = x.quote.author;
-            // document.documentElement.style.setProperty(
-            //     "--overlay",
-            //     x.overlay
-            // );
-            // // Text Size
-            // let quoteContainer = document.getElementById("quote");
-            // let paragraph = document.getElementById("quote-1");
-            // paragraph.style.fontSize = "200px";
-            // let height = quoteContainer.clientHeight;
-            // let currentSize = 200;
-            // let whatever = parseFloat(height) - 20;
-            // while (parseFloat(paragraph.clientHeight) > whatever) {
-            //     currentSize = currentSize - 10;
-            //     paragraph.style.fontSize = currentSize + "px";
-            // }
         });
-    //}
-});
+        currentIndex++;
+        appendNext();
+
+        //setTimeout(() =>  document.documentElement.style.setProperty("--overlay", quotes[currentIndex]['overlay']), 250);
+    
+        setTimeout(() => {
+
+            document.getElementById('current').removeChild(document.getElementById(currentIndex -1));
+        }, 500);
+    });
+};
+
+onRefresh(document.getElementById('current'));
+
+

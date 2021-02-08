@@ -1961,6 +1961,7 @@
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 console.log(quotes[0]);
+var currentIndex = 1;
 var cover = document.createElement("div");
 cover.height = "100%";
 cover.width = "100%";
@@ -1969,9 +1970,25 @@ cover.style.left = 0;
 cover.style.top = 0;
 cover.style.width = "100%";
 cover.style.height = "100%";
-cover.style.backgroundColor = "white";
+cover.style.backgroundColor = "red";
 cover.style.zIndex = 1000;
 document.body.appendChild(cover);
+var quoteIndex = 0;
+
+var appendNext = function appendNext() {
+  document.getElementById('current').insertAdjacentHTML('beforeEnd', quotes[quoteIndex].template); // document.getElementById('newb').classList.add('slider');
+
+  var nw = document.getElementById("".concat(quotes[quoteIndex].index));
+  console.log(nw, quotes[quoteIndex]);
+  nw.style.position = 'absolute';
+  nw.style.top = 0; //.innerHTML = quotes[0].template;
+
+  nw.style.transform = "translate(0,-100%)";
+  nw.style.zIndex = 10;
+  quoteIndex++;
+};
+
+appendNext();
 
 var debounce = function debounce(func, wait) {
   var timeout;
@@ -1992,169 +2009,81 @@ var debounce = function debounce(func, wait) {
 
 window.onload = function () {
   document.documentElement.style.setProperty("--overlay", overlay);
-  var quoteContainer = document.getElementById("quote");
-  var paragraph = document.getElementById("quote-1");
+  var quoteContainer = document.getElementById("quote-container-".concat(currentIndex));
+  var paragraph = document.getElementById("quote-".concat(currentIndex));
   paragraph.style.fontSize = "200px";
   var height = quoteContainer.clientHeight;
   var currentSize = 200;
   var whatever = parseFloat(height) - 20;
 
   while (parseFloat(paragraph.clientHeight) > whatever) {
-    currentSize = currentSize - 10;
+    currentSize = currentSize - 2;
     paragraph.style.fontSize = currentSize + "px";
   }
 
-  document.body.removeChild(cover);
+  var imagesLoaded = 0;
+  quotes = quotes.map(function (q, i) {
+    var img = new Image();
+    img.src = q.image;
+    q.image = img;
+
+    img.onload = function () {
+      ++imagesLoaded;
+      console.log(imagesLoaded);
+
+      if (imagesLoaded === quotes.length - 1) {
+        document.body.removeChild(cover);
+      }
+    };
+
+    return q;
+  });
+  console.log(quotes);
 };
 
-document.getElementById("refresh").addEventListener("click", function (e) {
-  e.preventDefault();
-  var c = document.getElementById("container");
-  var qc = document.getElementById("quote-container");
-  var ic = document.getElementById("image-container");
-  ic.classList.add("w-full");
-  ic.style.visibility = "hidden"; // var elementToCover = c;
-  // var rect = elementToCover.getBoundingClientRect();
-  // var overlayElement = document.createElement("div");
-  // overlayElement.style.position = "absolute";
-  // overlayElement.style.zIndex = "999";
-  // overlayElement.style.width = "100%";
-  // overlayElement.style.height = "100%";
-  // overlayElement.style.top = 0 + "px";
-  // overlayElement.style.left = 0 + "px";
-  // // overlayElement.style.width = rect.right - rect.left + "px";
-  // // overlayElement.style.height = rect.bottom - rect.top + "px";
-  // overlayElement.style.backgroundColor = "red";
-  // //overlayElement.classList.add("rotate-in-center");
-  // document.body.appendChild(overlayElement);
+var onRefresh = function onRefresh(element) {
+  element.addEventListener("click", function (e) {
+    console.log(e);
+    e.preventDefault();
+    document.getElementById("".concat(currentIndex)).style.transform = "translate(0,100%)";
+    document.getElementById("".concat(currentIndex + 1)).style.transform = "translate(0,0)";
+    var quoteContainer = document.getElementById("quote-container-".concat(currentIndex + 1));
+    var paragraph = document.getElementById("quote-".concat(currentIndex + 1));
+    paragraph.style.fontSize = "200px";
+    var height = quoteContainer.clientHeight;
+    var currentSize = 80;
+    var whatever = parseFloat(height) - 20;
 
-  if (Math.round(Math.random())) {
-    c.classList.add("flex-row-reverse");
-  } else {
-    c.classList.remove("flex-row-reverse");
-  } //if (quotes.length) {
+    while (parseFloat(paragraph.clientHeight) > whatever) {
+      currentSize = currentSize - 2;
+      paragraph.style.fontSize = currentSize + "px";
+    }
 
-
-  console.log("Do Something");
-  var x = quotes.shift();
-  console.log("Old Colour is: " + colour);
-  console.log("New Colour Is " + x.colour);
-
-  if (colour !== x.colour) {
-    ["100", "200", "300", "400", "500", "600", "700", "800", "900"].forEach(function (y) {
-      Array.from(document.getElementsByClassName("bg-".concat(colour, "-").concat(y))).forEach(function (z) {
-        z.classList.add("bg-".concat(x.colour, "-").concat(y));
-        z.classList.remove("bg-".concat(colour, "-").concat(y));
+    fetch("http://localhost:8000/api/daily").then(function (x) {
+      return x.json();
+    }).then(function (x) {
+      console.log(x);
+      var img = new Image();
+      img.src = x.url;
+      quotes.push({
+        index: quotes.length + 1,
+        author: x.quote.author,
+        quote: x.quote.text,
+        image: img,
+        colour: x.colour,
+        overlay: x.overlay
       });
     });
-    ["100", "200", "300", "400", "500", "600", "700", "800", "900"].forEach(function (y) {
-      Array.from(document.getElementsByClassName("text-".concat(colour, "-").concat(y))).forEach(function (z) {
-        z.classList.add("text-".concat(x.colour, "-").concat(y));
-        z.classList.remove("text-".concat(colour, "-").concat(y));
-      });
-    });
-  }
+    currentIndex++;
+    appendNext(); //setTimeout(() =>  document.documentElement.style.setProperty("--overlay", quotes[currentIndex]['overlay']), 250);
 
-  colour = x.colour;
-  document.getElementById("image").src = x.image;
-  var img = new Image();
-
-  img.onload = function () {
     setTimeout(function () {
-      ic.classList.remove("w-full");
-      ic.style.visibility = "visible"; //document.body.removeChild(overlayElement);
-    }, 1000);
-  };
+      document.getElementById('current').removeChild(document.getElementById(currentIndex - 1));
+    }, 500);
+  });
+};
 
-  img.src = x.image;
-  document.getElementById("quote-1").innerText = x.quote;
-  document.getElementById("author").innerText = x.author;
-  document.documentElement.style.setProperty("--overlay", x.overlay); // Text Size
-
-  var quoteContainer = document.getElementById("quote");
-  var paragraph = document.getElementById("quote-1");
-  paragraph.style.fontSize = "200px";
-  var height = quoteContainer.clientHeight;
-  var currentSize = 200;
-  var whatever = parseFloat(height) - 20;
-
-  while (parseFloat(paragraph.clientHeight) > whatever) {
-    currentSize = currentSize - 10;
-    paragraph.style.fontSize = currentSize + "px";
-  } //} else {
-
-
-  fetch("http://localhost/api/daily").then(function (x) {
-    return x.json();
-  }).then(function (x) {
-    quotes.push({
-      author: x.quote.author,
-      quote: x.quote.text,
-      image: x.url,
-      colour: x.colour,
-      overlay: x.overlay
-    }); // [
-    //     `100`,
-    //     `200`,
-    //     `300`,
-    //     `400`,
-    //     `500`,
-    //     `600`,
-    //     `700`,
-    //     `800`,
-    //     `900`,
-    // ].forEach((y) => {
-    //     Array.from(
-    //         document.getElementsByClassName(`bg-${colour}-${y}`)
-    //     ).forEach((z) => {
-    //         z.classList.add(`bg-${x.colour}-${y}`);
-    //         z.classList.remove(`bg-${colour}-${y}`);
-    //     });
-    // });
-    // [
-    //     `100`,
-    //     `200`,
-    //     `300`,
-    //     `400`,
-    //     `500`,
-    //     `600`,
-    //     `700`,
-    //     `800`,
-    //     `900`,
-    // ].forEach((y) => {
-    //     Array.from(
-    //         document.getElementsByClassName(`text-${colour}-${y}`)
-    //     ).forEach((z) => {
-    //         z.classList.add(`text-${x.colour}-${y}`);
-    //         z.classList.remove(`text-${colour}-${y}`);
-    //     });
-    // });
-    // colour = x.colour;
-    // document.getElementById("image").src = x.url;
-    // let img = new Image();
-    // img.onload = () => {
-    //     document.body.removeChild(overlayElement);
-    // };
-    // img.src = x.url;
-    // document.getElementById("quote-1").innerText = x.quote.text;
-    // document.getElementById("author").innerText = x.quote.author;
-    // document.documentElement.style.setProperty(
-    //     "--overlay",
-    //     x.overlay
-    // );
-    // // Text Size
-    // let quoteContainer = document.getElementById("quote");
-    // let paragraph = document.getElementById("quote-1");
-    // paragraph.style.fontSize = "200px";
-    // let height = quoteContainer.clientHeight;
-    // let currentSize = 200;
-    // let whatever = parseFloat(height) - 20;
-    // while (parseFloat(paragraph.clientHeight) > whatever) {
-    //     currentSize = currentSize - 10;
-    //     paragraph.style.fontSize = currentSize + "px";
-    // }
-  }); //}
-});
+onRefresh(document.getElementById('current'));
 
 /***/ }),
 
