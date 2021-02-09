@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 module.exports = {
     purge: [
         "./storage/framework/views/*.php",
@@ -5,6 +7,7 @@ module.exports = {
     ],
     darkMode: "media", // or 'media' or 'class'
     theme: {
+        colors,
         extend: {
             fontFamily: {
                 poppins: ["Poppins", "sans-serif"],

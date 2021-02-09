@@ -3,8 +3,8 @@
 use App\Models\Image;
 use App\Models\Quote;
 use App\Assets\CloudinaryProvider;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,46 +58,52 @@ Route::get('/daily', function () {
 
     $quote = $quotes->pop();
 
-    $overlays = [
-        'purple' => '139, 92, 246',
-        'red'    => '239, 68, 68',
-        'blue'   => '59, 130, 246',
-        'green'  => '16, 185, 129',
-        'yellow' => '245, 158, 11',
-        'indigo' => '99, 102, 241',
-        'pink'   => '236, 72, 153',
-        'gray'   => '107, 114, 128',
+    // $overlays = [
+    //     'purple' => '139, 92, 246',
+    //     'red'    => '239, 68, 68',
+    //     'blue'   => '59, 130, 246',
+    //     'green'  => '16, 185, 129',
+    //     'yellow' => '245, 158, 11',
+    //     'indigo' => '99, 102, 241',
+    //     'pink'   => '236, 72, 153',
+    //     'gray'   => '107, 114, 128',
+    //     'orange' => '107, 114, 128',
+    // ];
+
+    $colours = [
+        'purple',
+        'red', 'blue', 'green', 'yellow', 'indigo', 'pink',
+        'gray', 'orange', 'amber', 'lime', 'emerald', 'teal',
+        'cyan', 'lightBlue', 'violet', 'fuchsia', 'rose',
     ];
+    $colour = $colours[rand(0, count($colours) - 1)];
 
-    $colours = ['purple', 'red', 'blue', 'green', 'yellow', 'indigo', 'pink', 'gray'];
-    $colour  = $colours[rand(0, 7)];
-
-    $quotes->map(function ($quote, $index) use ($colours, $overlays, $urls) {
+    $quotes->map(function ($quote, $index) use ($colours, $urls) {
         $index++;
-        $quote->index = ++$index;
-        $quote->colour  = $colours[rand(0, 7)];
-        $quote->overlay = $overlays[$quote->colour];
-        $quote->image   = $urls->random()['url'];
+        $quote->index  = ++$index;
+        $quote->colour = $colours[rand(0, count($colours) - 1)];
+        // $quote->overlay  = $overlays[$quote->colour];
+        $quote->image    = $urls->random()['url'];
         $quote->template = view('quote.container', [
-            'index' => $index,
+            'index'  => $index,
             'colour' => $quote->colour,
-            'url' => $quote->image,
-            'text' => $quote->quote,
-            'author' => $quote->author
+            'url'    => $quote->image,
+            'text'   => $quote->quote,
+            'author' => $quote->author,
         ])->render();
         return $quote;
     });
 
     return view('daily', [
-        'quotes'  => $quotes,
-        'quote'   => [
+        'quotes' => $quotes,
+        'quote'  => [
             'text'   => $quote->quote,
             'author' => $quote->author,
         ],
         //'url'     => Image::find(rand(1, Image::count()))->url,
-        'url'     => $urls->first()['url'],
-        'colour'  => $colour,
-        'overlay' => $overlays[$colour],
+        'url'    => $urls->first()['url'],
+        'colour' => $colour,
+        // 'overlay' => $overlays[$colour],
     ]);
 });
 

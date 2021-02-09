@@ -1,7 +1,7 @@
 <div id="{{$index}}" class=" min-w-vw h-screen bg-{{ $colour }}-100 point slider">
     <div class="h-full flex flex-col">
           <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
-              <header class="-mt-20 mb-20">
+              <header class="-mt-10 mb-10">
                   <div class="flex justify-center flex-row mt-10 items-center">
                       <h1 class="flex font-roboto uppercase text-3xl font-extrabold text-{{ $colour }}-500 tracking-wider">
                           Daily

@@ -1,7 +1,3 @@
-require("alpinejs");
-
-console.log(quotes[0]);
-
 let currentIndex = 1;
 
 let cover = document.createElement("div");
@@ -16,49 +12,46 @@ cover.style.backgroundColor = "red";
 cover.style.zIndex = 1000;
 document.body.appendChild(cover);
 
-
 let quoteIndex = 0;
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
-  }
+}
 
 let position = {
     above: "translate(0,-100%)",
     right: "translate(100%, 0)",
     below: "translate(0,100%)",
-    left: "translate(-100%,0)"
+    left: "translate(-100%,0)",
 };
 
 let outro = {
     above: "translate(0,100%)",
-    right:  "translate(-100%,0)",
+    right: "translate(-100%,0)",
     below: "translate(0,-100%)",
-    left: "translate(100%, 0)"
-}
+    left: "translate(100%, 0)",
+};
 
 let randomAnimation;
 
-const  appendNext = () =>  {
+const appendNext = () => {
+    document
+        .getElementById("current")
+        .insertAdjacentHTML("beforeEnd", quotes[quoteIndex].template);
 
-    document.getElementById('current').insertAdjacentHTML('beforeEnd', quotes[quoteIndex].template)
-    // document.getElementById('newb').classList.add('slider');
     let nw = document.getElementById(`${quotes[quoteIndex].index}`);
-    console.log(nw, quotes[quoteIndex]);
-    nw.style.position = 'absolute';
-    nw.style.top = 0;    
-    //.innerHTML = quotes[0].template;
+
+    nw.style.position = "absolute";
+    nw.style.top = 0;
     randomAnimation = Object.keys(position)[getRandomIntInclusive(0, 3)];
     nw.style.transform = position[randomAnimation];
     nw.style.zIndex = 10;
     quoteIndex++;
-}
+};
 
 appendNext();
-
-
 
 const debounce = (func, wait) => {
     let timeout;
@@ -75,9 +68,9 @@ const debounce = (func, wait) => {
 };
 
 window.onload = function () {
-    document.documentElement.style.setProperty("--overlay", overlay);
-
-    let quoteContainer = document.getElementById(`quote-container-${currentIndex}`);
+    let quoteContainer = document.getElementById(
+        `quote-container-${currentIndex}`
+    );
     let paragraph = document.getElementById(`quote-${currentIndex}`);
     paragraph.style.fontSize = "200px";
 
@@ -94,19 +87,19 @@ window.onload = function () {
 
     let imagesLoaded = 0;
 
-    quotes = quotes.map((q, i) =>  {
-        const img = new Image;
+    quotes = quotes.map((q, i) => {
+        const img = new Image();
         img.src = q.image;
         q.image = img;
 
-            img.onload =  () => {
-                ++imagesLoaded;
-                console.log(imagesLoaded);
-                if (imagesLoaded === (quotes.length -1)) {
-                    document.body.removeChild(cover);
-                }
+        img.onload = () => {
+            ++imagesLoaded;
+
+            if (imagesLoaded === quotes.length - 1) {
+                document.body.removeChild(cover);
             }
-        
+        };
+
         return q;
     });
 
@@ -114,16 +107,18 @@ window.onload = function () {
 };
 
 let onRefresh = (element) => {
-
-        element.addEventListener("click", function (e) {
-
+    element.addEventListener("click", function (e) {
         e.preventDefault();
-    
-        document.getElementById(`${currentIndex}`).style.transform = outro[randomAnimation];
-        document.getElementById(`${currentIndex + 1}`).style.transform = "translate(0,0)";
-    
-        let quoteContainer = document.getElementById(`quote-container-${currentIndex +1}`);
-        let paragraph = document.getElementById(`quote-${currentIndex +1}`);
+
+        document.getElementById(`${currentIndex}`).style.transform =
+            outro[randomAnimation];
+        document.getElementById(`${currentIndex + 1}`).style.transform =
+            "translate(0,0)";
+
+        let quoteContainer = document.getElementById(
+            `quote-container-${currentIndex + 1}`
+        );
+        let paragraph = document.getElementById(`quote-${currentIndex + 1}`);
         paragraph.style.fontSize = "200px";
         let height = quoteContainer.clientHeight;
         let currentSize = 80;
@@ -133,34 +128,30 @@ let onRefresh = (element) => {
             paragraph.style.fontSize = currentSize + "px";
         }
 
-        fetch("http://localhost:8000/api/daily")
-        .then((x) => x.json())
-        .then((x) => {
-            const img = new Image;
-            img.src = x.url;
-            quotes.push({
-                index : quotes[quotes.length -1].index +1,
-                author: x.quote.author,
-                quote: x.quote.text,
-                image: img,
-                colour: x.colour,
-                overlay: x.overlay,
+        fetch("http://localhost/api/daily")
+            .then((x) => x.json())
+            .then((x) => {
+                const img = new Image();
+                img.src = x.url;
+                // quotes.unshift({
+                //     index: quotes[quotes.length - 1].index + 1,
+                //     author: x.quote.author,
+                //     quote: x.quote.text,
+                //     image: img,
+                //     colour: x.colour,
+                //     overlay: x.overlay,
+                // });
+                console.log(quotes);
             });
-            console.log(quotes);
-        });
         currentIndex++;
         appendNext();
 
-        //setTimeout(() =>  document.documentElement.style.setProperty("--overlay", quotes[currentIndex]['overlay']), 250);
-    
         setTimeout(() => {
-
-            document.getElementById('current').removeChild(document.getElementById(currentIndex -1));
-            //quotes.shift();
+            document
+                .getElementById("current")
+                .removeChild(document.getElementById(currentIndex - 1));
         }, 500);
     });
 };
 
-onRefresh(document.getElementById('current'));
-
-
+onRefresh(document.getElementById("current"));

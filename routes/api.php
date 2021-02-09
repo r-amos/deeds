@@ -37,7 +37,15 @@ Route::get('daily', function () {
         'gray'   => '107, 114, 128',
     ];
 
-    $colour = ['purple', 'red', 'blue', 'green', 'yellow', 'indigo', 'pink', 'gray'][rand(0, 7)];
+    $colours = [
+        'purple',
+        'red', 'blue', 'green', 'yellow', 'indigo', 'pink',
+        'gray', 'orange', 'amber', 'lime', 'emerald', 'teal',
+        'cyan', 'lightBlue', 'violet', 'fuchsia', 'rose',
+    ];
+    $colour = $colours[rand(0, count($colours) - 1)];
+
+    $url = $urls->random()['url'];
 
     return [
         'quote'   => [
@@ -45,8 +53,15 @@ Route::get('daily', function () {
             'author' => $quote->author,
         ],
         //'url'     => Image::find(rand(1, Image::count()))->url,
-        'url'     => $urls->random()['url'],
+        'url'     => $url,
         'colour'  => $colour,
         'overlay' => $overlays[$colour],
+        $quote->template = view('quote.container', [
+            'index'  => 1,
+            'colour' => $colour,
+            'url'    => $url,
+            'text'   => $quote->quote,
+            'author' => $quote->author,
+        ])->render(),
     ];
 });
