@@ -103,7 +103,7 @@ const changeImage = () => {
         stillWaiting = true;
     }
 
-    if (getRandomIntInclusive(0, 1)) {
+    if (getRandomIntInclusive(0, 1) === 1) {
         console.log("random");
         document
             .getElementById(`container-${currentIndex + 1}`)

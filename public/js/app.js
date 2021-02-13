@@ -101,7 +101,7 @@ var changeImage = function changeImage() {
     stillWaiting = true;
   }
 
-  if (getRandomIntInclusive(0, 1)) {
+  if (getRandomIntInclusive(0, 1) === 1) {
     console.log("random");
     document.getElementById("container-".concat(currentIndex + 1)).classList.add("flex-row-reverse");
   }
