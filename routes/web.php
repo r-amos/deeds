@@ -72,9 +72,9 @@ Route::get('/daily', function () {
     $quotes->map(function ($quote) use (&$colours, &$urls, &$i) {
         $quote->index  = $i;
         $quote->colour = $colours[rand(0, count($colours) - 1)];
-        $colours       = array_filter($colours, function ($x) use ($quote) {
+        $colours       = array_values(array_filter($colours, function ($x) use ($quote) {
             return $x !== $quote->colour;
-        });
+        }));
         $quote->image = $urls->random()['url'];
         $urls         = $urls->filter(function ($url) use ($quote) {
             return $url['url'] !== $quote->image;
