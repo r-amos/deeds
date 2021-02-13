@@ -104,6 +104,7 @@ const changeImage = () => {
     }
 
     if (getRandomIntInclusive(0, 1)) {
+        console.log("random");
         document
             .getElementById(`container-${currentIndex + 1}`)
             .classList.add("flex-row-reverse");

@@ -28,7 +28,7 @@
     </div>
 
     <div id="current">
-      <div id="1" class=" min-w-vw h-screen bg-{{ $colour }}-100 point slider">
+      <div id="1" class=" min-w-vw h-screen bg-{{ $colour }}-900 point slider">
           <div class="h-full flex flex-col">
                 <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
                     <header class="-mt-10 mb-10">
