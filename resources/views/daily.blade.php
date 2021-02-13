@@ -94,7 +94,7 @@
         bg-lightBlue-100 bg-lightBlue-600 bg-lightBlue-900 text-lightBlue-500 text-lightBlue-500 text-lightBlue-300
         bg-violet-100 bg-violet-600 bg-violet-900 text-violet-500 text-violet-500 text-violet-300
         bg-fuchsia-100 bg-fuchsia-600 bg-fuchsia-900 text-fuchsia-500 text-fuchsia-500 text-fuchsia-300
-        bg-rose-100 bg-rose-600 bg-rose-900 text-rose-500 text-rose-500 text-rose-300
+        bg-rose-100 bg-rose-600 bg-rose-900 text-rose-500 text-rose-500 text-rose-300 flex-row-reverse
     ">
     </div>
   </body>
