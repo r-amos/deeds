@@ -1,14 +1,10 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-    // purge: [
-    //     "./storage/framework/views/*.php",
-    //     "./resources/views/**/*.blade.php",
-    //     options: {
-    //         whitelist: ['tip', 'warning', 'expert'],
-    //         whitelistPatternsChildren: [/content.$/]
-    //      }
-    // ],
+    purge: [
+        "./storage/framework/views/*.php",
+        "./resources/views/**/*.blade.php",
+    ],
     darkMode: "media", // or 'media' or 'class'
     theme: {
         colors,
