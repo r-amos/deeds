@@ -1,16 +1,6 @@
 let currentIndex = 1;
 
-let cover = document.createElement("div");
-cover.height = "100%";
-cover.width = "100%";
-cover.style.position = "absolute";
-cover.style.left = 0;
-cover.style.top = 0;
-cover.style.width = "100%";
-cover.style.height = "100%";
-cover.style.backgroundColor = "red";
-cover.style.zIndex = 1000;
-document.body.appendChild(cover);
+let indexer = quotes[quotes.length - 1].index + 1;
 
 let quoteIndex = 0;
 
@@ -94,63 +84,90 @@ window.onload = function () {
 
         img.onload = () => {
             ++imagesLoaded;
-
             if (imagesLoaded === quotes.length - 1) {
-                document.body.removeChild(cover);
+                setTimeout(() => {
+                    document.getElementById("cover").style.transform =
+                        "translate(0,-100%)";
+                }, 500);
             }
         };
 
         return q;
     });
-
-    console.log(quotes);
 };
 
-let onRefresh = (element) => {
-    element.addEventListener("click", function (e) {
-        e.preventDefault();
+const changeImage = () => {
+    if (stillWaiting) {
+        return;
+    } else {
+        stillWaiting = true;
+    }
 
-        document.getElementById(`${currentIndex}`).style.transform =
-            outro[randomAnimation];
-        document.getElementById(`${currentIndex + 1}`).style.transform =
-            "translate(0,0)";
+    if (getRandomIntInclusive(0, 1)) {
+        document
+            .getElementById(`container-${currentIndex + 1}`)
+            .classList.add("flex-row-reverse");
+    }
 
-        let quoteContainer = document.getElementById(
-            `quote-container-${currentIndex + 1}`
-        );
-        let paragraph = document.getElementById(`quote-${currentIndex + 1}`);
-        paragraph.style.fontSize = "200px";
-        let height = quoteContainer.clientHeight;
-        let currentSize = 80;
-        let whatever = parseFloat(height) - 20;
-        while (parseFloat(paragraph.clientHeight) > whatever) {
-            currentSize = currentSize - 2;
-            paragraph.style.fontSize = currentSize + "px";
-        }
+    document.getElementById(`${currentIndex}`).style.transform =
+        outro[randomAnimation];
+    document.getElementById(`${currentIndex + 1}`).style.transform =
+        "translate(0,0)";
 
-        fetch("http://localhost/api/daily")
-            .then((x) => x.json())
-            .then((x) => {
-                const img = new Image();
-                img.src = x.url;
-                // quotes.unshift({
-                //     index: quotes[quotes.length - 1].index + 1,
-                //     author: x.quote.author,
-                //     quote: x.quote.text,
-                //     image: img,
-                //     colour: x.colour,
-                //     overlay: x.overlay,
-                // });
-                console.log(quotes);
+    document
+        .getElementById(`${currentIndex + 1}`)
+        .classList.remove("invisible");
+
+    let quoteContainer = document.getElementById(
+        `quote-container-${currentIndex + 1}`
+    );
+    let paragraph = document.getElementById(`quote-${currentIndex + 1}`);
+    paragraph.style.fontSize = "200px";
+    let height = quoteContainer.clientHeight;
+    let currentSize = 80;
+    let whatever = parseFloat(height) - 20;
+    while (parseFloat(paragraph.clientHeight) > whatever) {
+        currentSize = currentSize - 2;
+        paragraph.style.fontSize = currentSize + "px";
+    }
+
+    fetch(`http://localhost/api/daily/${indexer}`)
+        .then((x) => x.json())
+        .then((x) => {
+            indexer++;
+            const img = new Image();
+            img.src = x.url;
+            quotes.push({
+                index: x.index,
+                author: x.quote.author,
+                quote: x.quote.text,
+                image: img,
+                colour: x.colour,
+                overlay: x.overlay,
+                template: x.quote.template,
             });
-        currentIndex++;
-        appendNext();
+            stillWaiting = false;
+        });
+    currentIndex++;
+    appendNext();
 
-        setTimeout(() => {
-            document
-                .getElementById("current")
-                .removeChild(document.getElementById(currentIndex - 1));
-        }, 500);
+    setTimeout(() => {
+        document
+            .getElementById("current")
+            .removeChild(document.getElementById(currentIndex - 1));
+    }, 500);
+};
+
+let interval = setInterval(changeImage, 10000);
+
+let stillWaiting = false;
+
+let onRefresh = (element) => {
+    element.addEventListener("click", (e) => {
+        clearInterval(interval);
+        interval = setInterval(changeImage, 10000);
+        e.preventDefault();
+        changeImage();
     });
 };
 

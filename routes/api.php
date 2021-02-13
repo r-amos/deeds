@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('daily', function () {
+Route::get('daily/{id}', function ($id) {
     $quote = Quote::find(rand(1, Quote::count()));
 
     $provider = CloudinaryProvider::create();
@@ -48,20 +48,23 @@ Route::get('daily', function () {
     $url = $urls->random()['url'];
 
     return [
-        'quote'   => [
-            'text'   => $quote->quote,
-            'author' => $quote->author,
+        'index'  => (int) $id,
+        'quote'  => [
+            'text'     => $quote->quote,
+            'author'   => $quote->author,
+            'template' => view('quote.container', [
+                'index'  => $id,
+                'colour' => $colour,
+                'url'    => $url,
+                'text'   => $quote->quote,
+                'author' => $quote->author,
+                'year'   => [2016, 2017, 2018, 2019, 2020, 2021][rand(0, 5)],
+            ])->render(),
         ],
         //'url'     => Image::find(rand(1, Image::count()))->url,
-        'url'     => $url,
-        'colour'  => $colour,
-        'overlay' => $overlays[$colour],
-        $quote->template = view('quote.container', [
-            'index'  => 1,
-            'colour' => $colour,
-            'url'    => $url,
-            'text'   => $quote->quote,
-            'author' => $quote->author,
-        ])->render(),
+        'url'    => $url,
+        'colour' => $colour,
+        // 'overlay' => $overlays[$colour],
+
     ];
 });

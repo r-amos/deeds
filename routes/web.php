@@ -4,6 +4,7 @@ use App\Models\Image;
 use App\Models\Quote;
 use App\Assets\CloudinaryProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,10 +42,11 @@ Route::get('/images/{image}', function (Image $image) {
 });
 
 Route::get('/daily', function () {
-    //quote = Quote::find(rand(1, Quote::count()));
 
-    $provider = CloudinaryProvider::create();
-    $urls     = $provider->getAssetUrls('deeds/quotes');
+    $urls = Cache::rememberForever('quotes', function () {
+        $provider = CloudinaryProvider::create();
+        return $provider->getAssetUrls('deeds/quotes');
+    });
 
     $count  = Quote::count();
     $quotes = collect();
@@ -58,18 +60,6 @@ Route::get('/daily', function () {
 
     $quote = $quotes->pop();
 
-    // $overlays = [
-    //     'purple' => '139, 92, 246',
-    //     'red'    => '239, 68, 68',
-    //     'blue'   => '59, 130, 246',
-    //     'green'  => '16, 185, 129',
-    //     'yellow' => '245, 158, 11',
-    //     'indigo' => '99, 102, 241',
-    //     'pink'   => '236, 72, 153',
-    //     'gray'   => '107, 114, 128',
-    //     'orange' => '107, 114, 128',
-    // ];
-
     $colours = [
         'purple',
         'red', 'blue', 'green', 'yellow', 'indigo', 'pink',
@@ -78,74 +68,35 @@ Route::get('/daily', function () {
     ];
     $colour = $colours[rand(0, count($colours) - 1)];
 
-    $quotes->map(function ($quote, $index) use ($colours, $urls) {
-        $index++;
-        $quote->index  = ++$index;
+    $i = 2;
+    $quotes->map(function ($quote) use ($colours, &$urls, &$i) {
+        $quote->index  = $i;
         $quote->colour = $colours[rand(0, count($colours) - 1)];
-        // $quote->overlay  = $overlays[$quote->colour];
-        $quote->image    = $urls->random()['url'];
+        $quote->image  = $urls->random()['url'];
+        $urls          = $urls->filter(function ($url) use ($quote) {
+            return $url['url'] !== $quote->image;
+        });
         $quote->template = view('quote.container', [
-            'index'  => $index,
+            'index'  => $i,
             'colour' => $quote->colour,
             'url'    => $quote->image,
             'text'   => $quote->quote,
             'author' => $quote->author,
+            'year'   => [2016, 2017, 2018, 2019, 2020, 2021][rand(0, 5)],
         ])->render();
+        $i++;
         return $quote;
     });
 
     return view('daily', [
+        'cover'  => view('quote.loading')->render(),
         'quotes' => $quotes,
         'quote'  => [
             'text'   => $quote->quote,
             'author' => $quote->author,
         ],
-        //'url'     => Image::find(rand(1, Image::count()))->url,
         'url'    => $urls->first()['url'],
         'colour' => $colour,
-        // 'overlay' => $overlays[$colour],
-    ]);
-});
-
-Route::get('/test', function () {
-
-    $count  = Quote::count();
-    $quotes = collect();
-
-    while ($quotes->count() !== 0) {
-        $quote = Quote::find(rand(1, $count));
-        if (!$quotes->has($quote->getKey())) {
-            $quotes->add($quote);
-        }
-    }
-
-    $quote = $quotes->pop();
-
-    $overlays = [
-        'purple' => '139, 92, 246',
-        'red'    => '239, 68, 68',
-        'blue'   => '59, 130, 246',
-        'green'  => '16, 185, 129',
-        'yellow' => '245, 158, 11',
-        'indigo' => '99, 102, 241',
-        'pink'   => '236, 72, 153',
-        'gray'   => '107, 114, 128',
-    ];
-
-    $colour = ['purple', 'red', 'blue', 'green', 'yellow', 'indigo', 'pink', 'gray'][rand(0, 7)];
-
-    return view('test', [
-        'quotes'  => $quotes,
-        'quote'   => [
-            'text'   => $quote->quote,
-            'author' => $quote->author,
-        ],
-        //'url'     => Image::find(rand(1, Image::count()))->url,
-        'url'     => [
-            'https://res.cloudinary.com/dy5neeiyk/image/upload/v1611518830/deeds/quotes/IMG_20201125_080924_k321xw.jpg',
-            'https://res.cloudinary.com/dy5neeiyk/image/upload/v1611399541/deeds/quotes/IMG_20210116_103854_icbygr.jpg',
-        ][rand(0, 1)],
-        'colour'  => $colour,
-        'overlay' => $overlays[$colour],
+        'year'   => [2016, 2017, 2018, 2019, 2020, 2021][rand(0, 5)],
     ]);
 });
