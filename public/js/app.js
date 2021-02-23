@@ -1,21 +1,191 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-var currentIndex = 1;
-var indexer = quotes[quotes.length - 1].index + 1;
-var quoteIndex = 0;
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _random__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./random */ "./resources/js/random.js");
+/* harmony import */ var _preload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./preload */ "./resources/js/preload.js");
+/* harmony import */ var _resize__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./resize */ "./resources/js/resize.js");
+/* harmony import */ var _randomPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./randomPosition */ "./resources/js/randomPosition.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function getRandomIntInclusive(min, max) {
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+var interval;
+var outroAnimation;
+var currentContainer = document.getElementById("current");
+
+function setStyle(element, propertyObject) {
+  for (var property in propertyObject) {
+    element.style[property] = propertyObject[property];
+  }
+}
+
+var styleNextQuote = function styleNextQuote(quoteElement) {
+  var _randomPosition = (0,_randomPosition__WEBPACK_IMPORTED_MODULE_3__.default)(),
+      position = _randomPosition.position,
+      outro = _randomPosition.outro;
+
+  outroAnimation = outro;
+  setStyle(quoteElement, {
+    position: "absolute",
+    top: 0,
+    transform: position,
+    zIndex: 10
+  });
+};
+
+var appendNext = function appendNext() {
+  var nextQuote = quotes.shift();
+  currentContainer.insertAdjacentHTML("beforeEnd", nextQuote.template);
+  styleNextQuote(document.getElementById("".concat(nextQuote.index)));
+};
+
+appendNext();
+
+window.onload = function () {
+  (0,_resize__WEBPACK_IMPORTED_MODULE_2__.default)(currentContainer.children[0].id);
+  (0,_preload__WEBPACK_IMPORTED_MODULE_1__.default)(quotes, function () {
+    setTimeout(function () {
+      interval = setInterval(changeImage, 6000000);
+      document.getElementById("cover").style.transform = "translate(0,-100%)";
+    }, 500);
+  });
+};
+
+var changeImage = function changeImage() {
+  var _Array$from = Array.from(currentContainer.children),
+      _Array$from2 = _slicedToArray(_Array$from, 2),
+      currentQuote = _Array$from2[0],
+      nextQuote = _Array$from2[1];
+
+  var nextIndex = nextQuote.id;
+
+  if ((0,_random__WEBPACK_IMPORTED_MODULE_0__.default)(0, 1) === 1) {
+    nextQuote.querySelector("#container-".concat(nextIndex)).classList.add("flex-row-reverse");
+  }
+
+  currentQuote.style.transform = outroAnimation;
+  nextQuote.style.transform = "translate(0,0)";
+  nextQuote.classList.remove("invisible");
+  (0,_resize__WEBPACK_IMPORTED_MODULE_2__.default)(nextIndex);
+
+  if (quotes.length % 5 === 0) {
+    fetch(apiUrl).then(function (x) {
+      return x.json();
+    }).then(function (newQuotes) {
+      (0,_preload__WEBPACK_IMPORTED_MODULE_1__.default)(newQuotes);
+      quotes = [].concat(_toConsumableArray(quotes), _toConsumableArray(newQuotes));
+    });
+  }
+
+  appendNext();
+  setTimeout(function () {
+    currentContainer.removeChild(currentQuote);
+  }, 500);
+};
+
+var onRefresh = function onRefresh(element) {
+  element.addEventListener("click", function (e) {
+    clearInterval(interval);
+    interval = setInterval(changeImage, 600000);
+    e.preventDefault();
+    changeImage();
+  });
+};
+
+onRefresh(currentContainer);
+
+/***/ }),
+
+/***/ "./resources/js/preload.js":
+/*!*********************************!*\
+  !*** ./resources/js/preload.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (quotes, cb) {
+  var imagesLoaded = 0;
+  quotes.forEach(function (quote) {
+    var img = new Image();
+    img.src = quote.image;
+    quote.image = img;
+
+    img.onload = function () {
+      imagesLoaded++;
+
+      if (imagesLoaded === quotes.length - 1) {
+        if (typeof cb === "function") {
+          cb();
+        }
+      }
+    };
+
+    return quote;
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/random.js":
+/*!********************************!*\
+  !*** ./resources/js/random.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
-}
+  return Math.floor(Math.random() * (max - min + 1) + min);
+});
+
+/***/ }),
+
+/***/ "./resources/js/randomPosition.js":
+/*!****************************************!*\
+  !*** ./resources/js/randomPosition.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _random__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./random */ "./resources/js/random.js");
 
 var position = {
   above: "translate(0,-100%)",
@@ -29,135 +199,39 @@ var outro = {
   below: "translate(0,-100%)",
   left: "translate(100%, 0)"
 };
-var randomAnimation;
-
-var appendNext = function appendNext() {
-  document.getElementById("current").insertAdjacentHTML("beforeEnd", quotes[quoteIndex].template);
-  var nw = document.getElementById("".concat(quotes[quoteIndex].index));
-  nw.style.position = "absolute";
-  nw.style.top = 0;
-  randomAnimation = Object.keys(position)[getRandomIntInclusive(0, 3)];
-  nw.style.transform = position[randomAnimation];
-  nw.style.zIndex = 10;
-  quoteIndex++;
-};
-
-appendNext();
-
-var debounce = function debounce(func, wait) {
-  var timeout;
-  return function executedFunction() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    var later = function later() {
-      clearTimeout(timeout);
-      func.apply(void 0, args);
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var randomAnimation = Object.keys(position)[(0,_random__WEBPACK_IMPORTED_MODULE_0__.default)(0, 3)];
+  return {
+    position: position[randomAnimation],
+    outro: outro[randomAnimation]
   };
-};
+});
 
-window.onload = function () {
+/***/ }),
+
+/***/ "./resources/js/resize.js":
+/*!********************************!*\
+  !*** ./resources/js/resize.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (currentIndex) {
   var quoteContainer = document.getElementById("quote-container-".concat(currentIndex));
   var paragraph = document.getElementById("quote-".concat(currentIndex));
   paragraph.style.fontSize = "200px";
   var height = quoteContainer.clientHeight;
-  var currentSize = 200;
+  var currentSize = 150;
   var whatever = parseFloat(height) - 20;
 
   while (parseFloat(paragraph.clientHeight) > whatever) {
     currentSize = currentSize - 2;
     paragraph.style.fontSize = currentSize + "px";
   }
-
-  var imagesLoaded = 0;
-  quotes = quotes.map(function (q, i) {
-    var img = new Image();
-    img.src = q.image;
-    q.image = img;
-
-    img.onload = function () {
-      ++imagesLoaded;
-
-      if (imagesLoaded === quotes.length - 1) {
-        setTimeout(function () {
-          document.getElementById("cover").style.transform = "translate(0,-100%)";
-        }, 500);
-      }
-    };
-
-    return q;
-  });
-};
-
-var changeImage = function changeImage() {
-  if (stillWaiting) {
-    return;
-  } else {
-    stillWaiting = true;
-  }
-
-  if (getRandomIntInclusive(0, 1) === 1) {
-    console.log("random");
-    document.getElementById("container-".concat(currentIndex + 1)).classList.add("flex-row-reverse");
-  }
-
-  document.getElementById("".concat(currentIndex)).style.transform = outro[randomAnimation];
-  document.getElementById("".concat(currentIndex + 1)).style.transform = "translate(0,0)";
-  document.getElementById("".concat(currentIndex + 1)).classList.remove("invisible");
-  var quoteContainer = document.getElementById("quote-container-".concat(currentIndex + 1));
-  var paragraph = document.getElementById("quote-".concat(currentIndex + 1));
-  paragraph.style.fontSize = "200px";
-  var height = quoteContainer.clientHeight;
-  var currentSize = 80;
-  var whatever = parseFloat(height) - 20;
-
-  while (parseFloat(paragraph.clientHeight) > whatever) {
-    currentSize = currentSize - 2;
-    paragraph.style.fontSize = currentSize + "px";
-  }
-
-  fetch("http://localhost/api/daily/".concat(indexer)).then(function (x) {
-    return x.json();
-  }).then(function (x) {
-    indexer++;
-    var img = new Image();
-    img.src = x.url;
-    quotes.push({
-      index: x.index,
-      author: x.quote.author,
-      quote: x.quote.text,
-      image: img,
-      colour: x.colour,
-      overlay: x.overlay,
-      template: x.quote.template
-    });
-    stillWaiting = false;
-  });
-  currentIndex++;
-  appendNext();
-  setTimeout(function () {
-    document.getElementById("current").removeChild(document.getElementById(currentIndex - 1));
-  }, 500);
-};
-
-var interval = setInterval(changeImage, 10000);
-var stillWaiting = false;
-
-var onRefresh = function onRefresh(element) {
-  element.addEventListener("click", function (e) {
-    clearInterval(interval);
-    interval = setInterval(changeImage, 10000);
-    e.preventDefault();
-    changeImage();
-  });
-};
-
-onRefresh(document.getElementById("current"));
+});
 
 /***/ }),
 
@@ -167,7 +241,6 @@ onRefresh(document.getElementById("current"));
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -206,6 +279,18 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// It's empty as some runtime module handles the default behavior
 /******/ 	__webpack_require__.x = x => {}
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
