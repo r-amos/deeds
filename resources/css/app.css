@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 html {
-    height: 100%;
+    height: -webkit-fill-available;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
 }
 
 .whatever {
@@ -47,11 +52,15 @@ html {
     left: 50%;
     transform: translate(-50%, -70%);
     z-index: 2;
-    padding: 15px;
-    /* @media only screen and (min-width: 1024px) {
-        height: 80px;
-        width: 80px;
-    } */
+    padding: 10px;
+}
+
+@media (max-width: 1080px) {
+    .refresh {
+        height: 40px;
+        width: 40px;
+        padding: 15px;
+    }
 }
 
 .refresh-icon {

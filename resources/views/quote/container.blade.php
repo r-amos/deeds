@@ -18,7 +18,7 @@
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &ldquo;
                               </div>
-                              <p id="quote-{{$quote->index}}" class="font-merriweather text-gray-200 font-semibold xl:font-bold leading-tight pb-2 xl:pb-6">
+                              <p id="quote-{{$quote->index}}" class="font-merriweather text-gray-200 font-semibold xl:font-bold leading-tight pb-4 xl:pb-6">
                                 {{ $quote->text }}
                               </p>
                               <div class="absolute -right-2 bottom-4 xl:-right-10 xl:-bottom-4 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
