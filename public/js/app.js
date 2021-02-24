@@ -74,7 +74,11 @@ window.onload = function () {
   (0,_preload__WEBPACK_IMPORTED_MODULE_1__.default)(quotes, function () {
     setTimeout(function () {
       interval = setInterval(changeImage, 6000000);
-      document.getElementById("cover").style.transform = "translate(0,-100%)";
+      var cover = document.getElementById("cover");
+      cover.style.transform = "translate(0,-100%)";
+      setTimeout(function () {
+        return cover.style.display = "none";
+      }, 500);
     }, 500);
   });
 };

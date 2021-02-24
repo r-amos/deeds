@@ -37,8 +37,9 @@ window.onload = () => {
     preloadQuoteImages(quotes, () => {
         setTimeout(() => {
             interval = setInterval(changeImage, 6000000);
-            document.getElementById("cover").style.transform =
-                "translate(0,-100%)";
+            const cover = document.getElementById("cover");
+            cover.style.transform = "translate(0,-100%)";
+            setTimeout(() => (cover.style.display = "none"), 500);
         }, 500);
     });
 };

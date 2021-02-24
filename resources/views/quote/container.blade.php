@@ -1,7 +1,7 @@
 <div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invisible'}}">
     <div class="h-full flex flex-col">
           <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
-              <header class="-mt-5 xl:-mt-10 mb-5 xl:mb-10">
+              <header class="-mt-5 xl:-mt-10 mb-2 xl:mb-10">
                   <div class="flex justify-center flex-row mt-10 items-center">
                       <h1 class="flex font-roboto uppercase text-xl xl:text-3xl font-extrabold text-{{ $quote->colour }}-500 tracking-wider">
                           Daily
