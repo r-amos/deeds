@@ -1,4 +1,4 @@
-<div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invisible'}}">
+<div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'hidden'}}">
     <div class="h-full flex flex-col">
           <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
               <header class="-mt-5 xl:-mt-10 mb-2 xl:mb-10">
@@ -14,11 +14,11 @@
               </header>
               <div id="container-{{$quote->index}}" class="flex flex-col-reverse xl:flex-row h-5/6 w-5/6 xl:w-4/6 whatever tester relative">
                   <div id="" class="h-1/2 xl:h-full xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
-                          <div id="quote-container-{{$quote->index}}" class="h-4/6 flex flex-col relative justify-center pt-10 pl-5 xl:pt-0 xl:pl-0">
+                          <div id="quote-container-{{$quote->index}}" class="h-4/6 flex flex-col relative justify-center pt-5  pl-5 xl:pt-0 xl:pl-0">
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-8xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &ldquo;
                               </div>
-                              <p id="quote-{{$quote->index}}" class="font-merriweather text-7xl text-gray-200 font-semibold xl:font-bold leading-tight pb-6">
+                              <p id="quote-{{$quote->index}}" class="font-merriweather text-7xl text-gray-200 font-semibold xl:font-bold leading-tight pb-2 xl:pb-6">
                                 {{ $quote->text }}
                               </p>
                               <div class="absolute -right-2 bottom-4 xl:-right-10 xl:-bottom-4 text-8xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">

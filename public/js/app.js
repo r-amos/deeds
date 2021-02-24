@@ -97,7 +97,7 @@ var changeImage = function changeImage() {
 
   currentQuote.style.transform = outroAnimation;
   nextQuote.style.transform = "translate(0,0)";
-  nextQuote.classList.remove("invisible");
+  nextQuote.classList.remove("hidden");
   (0,_resize__WEBPACK_IMPORTED_MODULE_2__.default)(nextIndex);
 
   if (quotes.length % 5 === 0) {
