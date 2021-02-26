@@ -229,7 +229,7 @@ __webpack_require__.r(__webpack_exports__);
   paragraph.style.fontSize = "200px";
   var height = quoteContainer.clientHeight;
   var currentSize = 150;
-  var whatever = parseFloat(height) - 20;
+  var whatever = parseFloat(height) - 75;
 
   while (parseFloat(paragraph.clientHeight) > whatever) {
     currentSize = currentSize - 2;
