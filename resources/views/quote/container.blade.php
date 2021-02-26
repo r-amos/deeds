@@ -12,7 +12,7 @@
                       </h1>
                   </div>
               </header>
-              <div id="container-{{$quote->index}}" class="flex flex-col-reverse xl:flex-row h-5/6 w-5/6 xl:w-4/6 whatever tester relative">
+              <div id="container-{{$quote->index}}" class="max-h-test flex flex-col-reverse xl:flex-row h-5/6 w-5/6 xl:w-4/6 whatever tester relative">
                   <div class="flexy xl:flex-grow xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
                           <div id="quote-container-{{$quote->index}}" class="h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pt-0 xl:pl-0">
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">

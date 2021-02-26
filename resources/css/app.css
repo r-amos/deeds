@@ -30,7 +30,6 @@ body {
         min-height: 50%;
         max-height: 50%;
         flex-basis: 50%;
-        height: 50%;
     }
 }
 
@@ -40,6 +39,14 @@ body {
 
 .overlay {
     position: relative;
+}
+
+#current {
+    max-height: 100vh;
+}
+
+.max-h-test {
+    max-height: 83vh;
 }
 
 .overlay::before {
