@@ -51,7 +51,7 @@ const changeImage = () => {
     if (getRandomIntInclusive(0, 1) === 1) {
         nextQuote
             .querySelector(`#container-${nextIndex}`)
-            .classList.add("flex-row-reverse");
+            .classList.add("xl:flex-row-reverse");
     }
 
     currentQuote.style.transform = outroAnimation;

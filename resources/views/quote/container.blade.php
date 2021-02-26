@@ -1,4 +1,4 @@
-<div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'hidden'}}">
+<div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invsible'}}">
     <div class="h-full flex flex-col">
           <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
               <header class="-mt-5 xl:-mt-10 mb-2 xl:mb-10">
@@ -13,8 +13,8 @@
                   </div>
               </header>
               <div id="container-{{$quote->index}}" class="flex flex-col-reverse xl:flex-row h-5/6 w-5/6 xl:w-4/6 whatever tester relative">
-                  <div id="" class="h-1/2 xl:h-full xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
-                          <div id="quote-container-{{$quote->index}}" class="h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pl-5 xl:pt-0 xl:pl-0">
+                  <div class="flexy xl:flex-grow xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
+                          <div id="quote-container-{{$quote->index}}" class="h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pt-0 xl:pl-0">
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &ldquo;
                               </div>
@@ -38,8 +38,8 @@
                               * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
                           </div>
                   </div>
-                  <div class="h-1/2 xl:w-1/2 xl:h-full overflow-hidden overlay">
-                      <img id="image" class="h-full w-full  object-cover" src="{{ $quote->image }}" >
+                  <div class="flexy xl:w-1/2 xl:h-full overflow-hidden overlay">
+                      <img id="image" class="h-full w-full object-cover" src="{{ $quote->image }}" >
                   </div>
               </div>
           </div>

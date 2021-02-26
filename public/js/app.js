@@ -92,7 +92,7 @@ var changeImage = function changeImage() {
   var nextIndex = nextQuote.id;
 
   if ((0,_random__WEBPACK_IMPORTED_MODULE_0__.default)(0, 1) === 1) {
-    nextQuote.querySelector("#container-".concat(nextIndex)).classList.add("flex-row-reverse");
+    nextQuote.querySelector("#container-".concat(nextIndex)).classList.add("xl:flex-row-reverse");
   }
 
   currentQuote.style.transform = outroAnimation;
