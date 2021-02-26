@@ -34,7 +34,7 @@
                               <span class="uppercase self-start">Dee Dee *</span>
                               <span class="uppercase self-start text-sm ml-3 mt-1">~ {{$quote->year}}</span>
                           </div>
-                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic">
+                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic mb-1">
                               * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
                           </div>
                   </div>
