@@ -6,7 +6,7 @@
                       <h1 class="flex font-roboto uppercase text-md xl:text-3xl font-semibold xl:font-extrabold text-{{ $quote->colour }}-500 tracking-wider">
                           Daily
                       </h1>
-                      <img class="inline-block max-h-5 xl:max-h-24 mx-4" src="https://res.cloudinary.com/dy5neeiyk/image/upload/v1611233065/p49esb1x71rmm_wa9noh.png">
+                      <img class="inline-block max-h-12 xl:max-h-24 mx-2 xl:mx-4" src="https://res.cloudinary.com/dy5neeiyk/image/upload/v1611233065/p49esb1x71rmm_wa9noh.png">
                       <h1 class="flex font-roboto uppercase text-md xl:text-3xl font-semibold xl:font-extrabold text-{{ $quote->colour }}-500 tracking-wider">
                           Deeds
                       </h1>
