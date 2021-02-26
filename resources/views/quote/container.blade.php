@@ -13,7 +13,7 @@
                   </div>
               </header>
               <div id="container-{{$quote->index}}" class="max-h-test flex flex-col-reverse xl:flex-row w-5/6 xl:w-4/6 whatever tester relative">
-                  <div class="flexy xl:flex-grow xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
+                  <div class="flexy pb-2 xl:flex-grow xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
                           <div id="quote-container-{{$quote->index}}" class="h-5/6 xl:h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pt-0 xl:pl-0">
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &ldquo;
@@ -34,7 +34,7 @@
                               <span class="uppercase self-start">Dee Dee *</span>
                               <span class="uppercase self-start text-sm ml-3 mt-1">~ {{$quote->year}}</span>
                           </div>
-                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic mb-1">
+                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic">
                               * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
                           </div>
                   </div>
