@@ -9,7 +9,7 @@ export default (currentIndex) => {
 
     let currentSize = 150;
 
-    let whatever = parseFloat(height) - 10;
+    let whatever = parseFloat(height) - 90;
 
     while (parseFloat(paragraph.clientHeight) > whatever) {
         currentSize = currentSize - 2;

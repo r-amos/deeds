@@ -14,14 +14,14 @@
               </header>
               <div id="container-{{$quote->index}}" class="max-h-test flex flex-col-reverse xl:flex-row w-5/6 xl:w-4/6 whatever tester relative">
                   <div class="flexy pb-2 xl:flex-grow xl:w-1/2 bg-{{ $quote->colour }}-600 px-7 xl:px-20 flex items-center justify-center flex-col">
-                          <div id="quote-container-{{$quote->index}}" class="h-5/6 xl:h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pt-0 xl:pl-0">
+                          <div id="quote-container-{{$quote->index}}" class="xl:mt-10 h-5/6 xl:h-4/6 flex flex-col relative justify-center pt-5  pl-3 xl:pt-0 xl:pl-0">
                               <div class="absolute -left-4 top-10 xl:-left-14 xl:-top-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &ldquo;
                               </div>
-                              <p id="pt-6 xl:pt-1 quote-{{$quote->index}}" class="font-merriweather text-gray-200 font-semibold xl:font-bold leading-tight pb-4 xl:pb-6">
+                              <p id="quote-{{$quote->index}}" class="mh-80 font-merriweather text-gray-200 font-semibold xl:font-bold leading-tight xl:pb-10">
                                 {{ $quote->text }}
                               </p>
-                              <div class="absolute -right-2 bottom-4 xl:-right-10 xl:-bottom-4 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
+                              <div class="absolute -right-2 bottom-4 xl:-right-10 xl:-bottom-10 text-6xl xl:text-9xl font-arial text-{{ $quote->colour }}-300 leading-3">
                                   &rdquo;
                               </div>
                           </div>
@@ -34,7 +34,7 @@
                               <span class="uppercase self-start">Dee Dee *</span>
                               <span class="uppercase self-start text-sm ml-3 mt-1">~ {{$quote->year}}</span>
                           </div>
-                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic">
+                          <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic pb-5">
                               * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
                           </div>
                   </div>
