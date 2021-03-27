@@ -59,28 +59,23 @@ var styleNextQuote = function styleNextQuote(quoteElement) {
     transform: position,
     zIndex: 10
   });
-};
+}; // const appendNext = () => {
+//     const nextQuote = quotes.shift();
+//     currentContainer.insertAdjacentHTML("beforeEnd", nextQuote.template);
+//     styleNextQuote(document.getElementById(`${nextQuote.index}`));
+// };
+// appendNext();
 
-var appendNext = function appendNext() {
-  var nextQuote = quotes.shift();
-  currentContainer.insertAdjacentHTML("beforeEnd", nextQuote.template);
-  styleNextQuote(document.getElementById("".concat(nextQuote.index)));
-};
-
-appendNext();
 
 window.onload = function () {
-  (0,_resize__WEBPACK_IMPORTED_MODULE_2__.default)(currentContainer.children[0].id);
-  (0,_preload__WEBPACK_IMPORTED_MODULE_1__.default)(quotes, function () {
-    setTimeout(function () {
-      interval = setInterval(changeImage, 6000000);
-      var cover = document.getElementById("cover");
-      cover.style.transform = "translate(0,-100%)";
-      setTimeout(function () {
-        return cover.style.display = "none";
-      }, 500);
-    }, 500);
-  });
+  (0,_resize__WEBPACK_IMPORTED_MODULE_2__.default)(currentContainer.children[0].id); // preloadQuoteImages(quotes, () => {
+  //     setTimeout(() => {
+  //         interval = setInterval(changeImage, 6000000);
+  //         const cover = document.getElementById("cover");
+  //         cover.style.transform = "translate(0,-100%)";
+  //         setTimeout(() => (cover.style.display = "none"), 500);
+  //     }, 500);
+  // });
 };
 
 var changeImage = function changeImage() {
@@ -224,14 +219,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (currentIndex) {
-  var quoteContainer = document.getElementById("quote-container-".concat(currentIndex));
+  // let quoteContainer = document.getElementById(
+  //     `quote-container-${currentIndex}`
+  // );
   var paragraph = document.getElementById("quote-".concat(currentIndex));
-  paragraph.style.fontSize = "200px";
-  var height = quoteContainer.clientHeight;
-  var currentSize = 150;
-  var whatever = parseFloat(height) - 90;
+  paragraph.style.fontSize = "200px"; // let height = quoteContainer.clientHeight;
 
-  while (parseFloat(paragraph.clientHeight) > whatever) {
+  var currentSize = 150; // let whatever = parseFloat(height) - 90;
+  // let counter = 1;
+  // while (parseFloat(paragraph.clientHeight) > whatever && counter < 100) {
+  //     console.log(parseFloat(paragraph.clientHeight));
+  //     console.log(whatever);
+  //     counter++;
+  //     currentSize = currentSize - 2;
+  //     paragraph.style.fontSize = currentSize + "px";
+  // }
+
+  var quoteContainer = document.getElementById("container-".concat(currentIndex));
+  var width = Math.round(quoteContainer.clientWidth / 2);
+  var height = quoteContainer.clientHeight;
+
+  while (parseFloat(paragraph.scrollHeight) > height || parseFloat(paragraph.clientWidth) > width) {
+    console.log(parseFloat(paragraph.scrollHeight));
+    console.log(parseFloat(paragraph.clientWidth));
     currentSize = currentSize - 2;
     paragraph.style.fontSize = currentSize + "px";
   }

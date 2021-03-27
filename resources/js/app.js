@@ -24,24 +24,24 @@ const styleNextQuote = (quoteElement) => {
     });
 };
 
-const appendNext = () => {
-    const nextQuote = quotes.shift();
-    currentContainer.insertAdjacentHTML("beforeEnd", nextQuote.template);
-    styleNextQuote(document.getElementById(`${nextQuote.index}`));
-};
+// const appendNext = () => {
+//     const nextQuote = quotes.shift();
+//     currentContainer.insertAdjacentHTML("beforeEnd", nextQuote.template);
+//     styleNextQuote(document.getElementById(`${nextQuote.index}`));
+// };
 
-appendNext();
+// appendNext();
 
 window.onload = () => {
     resizeText(currentContainer.children[0].id);
-    preloadQuoteImages(quotes, () => {
-        setTimeout(() => {
-            interval = setInterval(changeImage, 6000000);
-            const cover = document.getElementById("cover");
-            cover.style.transform = "translate(0,-100%)";
-            setTimeout(() => (cover.style.display = "none"), 500);
-        }, 500);
-    });
+    // preloadQuoteImages(quotes, () => {
+    //     setTimeout(() => {
+    //         interval = setInterval(changeImage, 6000000);
+    //         const cover = document.getElementById("cover");
+    //         cover.style.transform = "translate(0,-100%)";
+    //         setTimeout(() => (cover.style.display = "none"), 500);
+    //     }, 500);
+    // });
 };
 
 const changeImage = () => {

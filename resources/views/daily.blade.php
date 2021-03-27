@@ -3,10 +3,10 @@
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-   <link rel="preconnect" href="https://fonts.gstatic.com">
+   <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-   <link rel="preconnect" href="https://fonts.gstatic.com">
-   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto+Condensed:wght@400;500:700&display=swap" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+   <!-- <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Roboto+Condensed:wght@400;500:700&display=swap" rel="stylesheet"> -->
     <!-- Scripts -->
     <script>
         let quotes = {!! json_encode($quotes) !!};
@@ -15,7 +15,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
   </head>
   <body id="body" class="slider overflow-hidden">
-   <div id="cover" class="bg-purple-200 h-screen v-screen w-full flex justify-center items-center fast-slide absolute">
+   <!-- <div id="cover" class="bg-purple-200 h-screen v-screen w-full flex justify-center items-center fast-slide absolute">
         <div class="flex justify-center flex-row -mt-10 items-center">
             <h1 class="flex font-roboto uppercase text-8xl font-extrabold text-purple-500 tracking-wider">
                     Daily
@@ -25,7 +25,7 @@
                 Deeds
             </h1>
         </div>
-    </div>
+    </div> -->
     <div id="current">
         @include('quote.container', ['quote' => $quote])
     </div>

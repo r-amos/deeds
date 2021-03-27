@@ -1,4 +1,54 @@
-<div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invsible'}}">
+<div id="{{ $quote->index }}" class="bg-purple-600 h-screen w-screen flex flex-col items-center justify-center bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invsible'}}">
+    <div style="max-height:75%; flex-basis:75%;" class="w-4/6 flex flex-col">
+        <div id="header" class=" flex justify-center flex-shrink mb-10">
+            <header class="">
+                  <div class="flex justify-center flex-row items-center">
+                      <h1 class="flex font-roboto uppercase text-md xl:text-3xl font-semibold xl:font-extrabold text-{{ $quote->colour }}-500 tracking-wider">Daily</h1>
+                      <img class="inline-block max-h-8 xl:max-h-24 mx-2 xl:mx-4" src="https://res.cloudinary.com/dy5neeiyk/image/upload/v1611233065/p49esb1x71rmm_wa9noh.png">
+                      <h1 class="flex font-roboto uppercase text-md xl:text-3xl font-semibold xl:font-extrabold text-{{ $quote->colour }}-500 tracking-wider">Deeds</h1>
+                  </div>
+              </header>
+        </div>
+        <div id="container-{{$quote->index}}" style="max-height: 80%" class="flex flex-grow">
+
+            <div class="flex-shrink:0 max-width:50% flex bg-red-600" id="quote-container-{{$quote->index}}" style="flex-basis:50%;" >
+
+
+
+                                <div class="text-9xl font-arial text-{{ $quote->colour }}-300 flex bg-blue-900">
+                                    <div>&ldquo;</div>
+                                </div>
+                                <div id="quote-{{$quote->index}}" class="font-merriweather text-gray-200 font-semibold xl:font-bold leading-tight flex self-center pt-10 pl-10 pb-10">
+                                    {{ $quote->text }}
+                                </div>
+                                <div class="text-9xl font-arial text-{{ $quote->colour }}-300 flex flex-col-reverse pr-5 bg-blue-600">
+                                    <div style="line-height:0;">&rdquo;</div>
+                                </div>
+
+
+                                <div class="break" style="flex-basis:100%; height:0"></div>
+
+
+
+                    <div class="bg-green-900">
+                        <div class="w-full font-roboto font-medium text-md xl:text-2xl tracking-wide text-gray-100 border-t pt-1 xl:pt-4 ml-5 flex">
+                                <span class="uppercase self-start">Dee Dee *</span><span class="uppercase self-start text-sm ml-3 mt-1">~ {{$quote->year}}</span>
+                        </div>
+                        <div class="align-bottom text-xs w-full font-roboto tracking-wide text-gray-100 pt-1 xl:pt-3 pl-3 italic pb-5">
+                            * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
+                        </div>
+                    </div>
+
+
+            </div>
+
+            <div style="min-width:50%; flex-basis:50%; background-image:url({{ $quote->image }}); background-size:cover; background-position:center;" id="image" class="flex-shrink:0"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div id="{{ $quote->index }}" class="min-w-vw h-screen bg-{{ $quote->colour }}-900 point slider {{$visibility ?? 'invsible'}}">
     <div class="h-full flex flex-col">
           <div class="flex-grow flex items-center justify-center -mt-8 flex-col">
               <header class="-mt-10 xl:-mt-10 mb-1 xl:mb-10">
@@ -38,10 +88,10 @@
                               * May of actually been said by <span id="{{$quote->author}}" class="text-xs font-semibold xl:text-base xl:font-medium"> {{ $quote->author }} </span>
                           </div>
                   </div>
-                  <div class="overflow-hidden">
+                  <div class="overflow-hidden flexy">
                       <img id="image" class="h-full w-full object-cover" src="{{ $quote->image }}" >
                   </div>
               </div>
           </div>
     </div>
-</div>
+</div> -->

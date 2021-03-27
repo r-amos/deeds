@@ -36,3 +36,11 @@ Route::get('/daily', function (QuoteService $quoteService) {
 
     return view('daily', compact('quotes', 'quote', 'visibility'));
 });
+
+Route::get('/test', function (QuoteService $quoteService) {
+    $quotes     = $quoteService->getMany(1);
+    $quote      = $quotes->pop();
+    $visibility = 'visible';
+
+    return view('test', compact('quotes', 'quote', 'visibility'));
+});

@@ -25,6 +25,12 @@ body {
     max-height: 665px;
 }
 
+@media (min-width: 1080px) {
+    .flexy {
+        width: 50%;
+    }
+}
+
 @media (max-width: 1080px) {
     .flexy {
         min-height: 50%;
